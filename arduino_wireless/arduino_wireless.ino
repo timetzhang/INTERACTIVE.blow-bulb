@@ -26,12 +26,11 @@ void setup() {
 }
 
 void loop() {
-
   int micDyn = analogRead(MIC);
-  if (micDyn > 650 && micReady) {
+  if (micDyn > 900 && micReady) {
     micReady = false;
     micTime = millis();
-    //Serial.println(micDyn);
+    Serial.println(micDyn);
     Serial1.println(micDyn);
   }
   if (millis() > micTime + 300) {
