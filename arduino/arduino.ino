@@ -1,13 +1,6 @@
 #include "Keyboard.h"
-#include <CD74HC4067.h>
 
-CD74HC4067 muxA(9, 10, 11, 12);  // create a new CD74HC4067 object with its four control pins
-CD74HC4067 muxB(3, 4, 5, 6);  // create a new CD74HC4067 object with its four control pins
-const int muxA_SIG = 8; // select a pin to share with the 16 channels of the CD74HC4067
-const int muxB_SIG = 2; // select a pin to share with the 16 channels of the CD74HC4067
-
-
-int count = 32;           // count of light
+int count = 13;           // count of light
 String inString = "";    // string to hold input
 int volume = 800;          // volume from sensor
 
@@ -26,9 +19,10 @@ void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
 
-  //Init 74HC4067
-  pinMode(muxA_SIG, OUTPUT);
-  pinMode(muxB_SIG, OUTPUT);
+  for (int i = 2; i < 14; i++) {
+    pinMode(i, OUTPUT);
+    digitalWrite(i, HIGH);
+  }
 }
 
 void loop() {
@@ -64,7 +58,7 @@ void loop() {
       }
       break;
     case ENDING:
-      if (millis() > actionTime + map(volume, 900, 1000, 120, 10) * 2*count) { //开始ENDED
+      if (millis() > actionTime + map(volume, 900, 1000, 120, 10) * count) { //开始ENDED
         actionTime = millis();
         shine_status = ENDED;
       } else {
@@ -79,41 +73,24 @@ void startShine() {
 }
 
 void shining() {
-  digitalWrite(muxA_SIG, LOW);
-  for (int i = 0; i < 16; i++) {
+  for (int i = 2; i < 2 + count; i++) {
     if (millis() > actionTime + i * map(volume, 900, 1000, 120, 10)) {
-      muxA.channel(i);
-    }
-  }
-  digitalWrite(muxB_SIG, LOW);
-  for (int i = 0; i < 16; i++) {
-    if (millis() > actionTime + (i + 16) * map(volume, 900, 1000, 120, 10)) {
-      muxB.channel(i);
+      digitalWrite(i, LOW);
     }
   }
 }
 
 void endShine() {
-  digitalWrite(muxA_SIG, HIGH);
-  for (int i = 0; i < 16; i++) {
+  for (int i = 2; i < 2 + count; i++) {
     if (millis() > actionTime + i * map(volume, 900, 1000, 120, 10)) {
-      muxA.channel(i);
-    }
-  }
-  digitalWrite(muxB_SIG, HIGH);
-  for (int i = 0; i < 16; iAAAAA) {
-    if (millis() > actionTime + (i + 16) * map(volume, 900, 1000, 120, 10)) {
-      muxB.channel(i);
+      digitalWrite(i, HIGH);
     }
   }
 }
 
 void stopShine() {
   shine_status = ENDED;
-  digitalWrite(muxA_SIG, HIGH);
-  digitalWrite(muxB_SIG, HIGH);
-  for (int i = 0; i < 16; ++i) {
-    muxA.channel(i);
-    muxB.channel(i);
+  for (int i = 2; i < 2 + count; i++) {
+    digitalWrite(i, HIGH);
   }
 }
