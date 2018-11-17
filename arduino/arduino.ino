@@ -58,7 +58,7 @@ void loop() {
       }
       break;
     case ENDING:
-      if (millis() > actionTime + map(volume, 900, 1000, 120, 10) * count) { //开始ENDED
+      if (millis() > actionTime + map(volume, 900, 1000, 120, 10) * 3 * count) { //开始ENDED
         actionTime = millis();
         shine_status = ENDED;
       } else {
@@ -74,7 +74,7 @@ void startShine() {
 
 void shining() {
   for (int i = 2; i < 2 + count; i++) {
-    if (millis() > actionTime + i * map(volume, 900, 1000, 120, 10)) {
+    if (millis() > actionTime + i * map(volume, 900, 1000, 140, 40)) {
       digitalWrite(i, LOW);
     }
   }
@@ -82,7 +82,7 @@ void shining() {
 
 void endShine() {
   for (int i = 2; i < 2 + count; i++) {
-    if (millis() > actionTime + i * map(volume, 900, 1000, 120, 10)) {
+    if (millis() > actionTime + i * map(volume, 900, 1000, 140, 40)) {
       digitalWrite(i, HIGH);
     }
   }
