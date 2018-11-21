@@ -27,7 +27,7 @@ void setup() {
 
 void loop() {
   int micDyn = analogRead(MIC);
-  if (micDyn > 900 && micReady) {
+  if (micDyn > 450 && micReady) {
     micReady = false;
     micTime = millis();
     Serial.println(micDyn);
@@ -37,20 +37,20 @@ void loop() {
     micReady = true;
   }
 
-  if (micReady) {
-    breath(10, 100);
-  } else {
-    breath(1, 100);
-  }
+//  if (micReady) {
+//    breath(10, 100);
+//  } else {
+//    breath(1, 100);
+//  }
 }
-
-void breath(int delayTime, int maxBrightness) {
-  analogWrite(LED, Brightness);
-  if (millis() > ledTime + delayTime) {
-    ledTime = millis();
-    Brightness = Brightness + Fadeness;
-    if (Brightness <= 0 || Brightness >= maxBrightness) {
-      Fadeness = -Fadeness;
-    }
-  }
-}
+//
+//void breath(int delayTime, int maxBrightness) {
+//  analogWrite(LED, Brightness);
+//  if (millis() > ledTime + delayTime) {
+//    ledTime = millis();
+//    Brightness = Brightness + Fadeness;
+//    if (Brightness <= 0 || Brightness >= maxBrightness) {
+//      Fadeness = -Fadeness;
+//    }
+//  }
+//}
